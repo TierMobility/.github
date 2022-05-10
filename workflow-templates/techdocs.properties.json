@@ -1,0 +1,14 @@
+{
+    "name": "TechDocs Rendering Workflow",
+    "description": "A starter workflow to render and publish TechDocs into our software catalog (NerdZoo).",
+    "iconName": "book-icon",
+    "categories": [
+        "Markdown"
+    ],
+    "filePatterns": [
+        "catalog-info.yaml$",
+        "mkdocs.yaml$",
+        "mkdocs.yml$",
+        "^docs\/.*\\.md$"
+    ]
+}

@@ -10,7 +10,7 @@ on:
       - "packages/**/mkdocs.yml"
 
 jobs:
-  setup:
+  catalog:
     # discover catalog info files
     uses: TierMobility/techdocs-workflows/.github/workflows/discover-catalog-locations.yml@main
     with:
@@ -18,21 +18,12 @@ jobs:
       entity_filename: catalog-info.yaml
   techdocs:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: catalog
     strategy:
-      matrix: ${{ fromJson(needs.setup.outputs.entity_locations) }}
-    steps:
-      # extract component information from the catalog info file
-      - id: extract-entity-info
-        uses: TierMobility/techdocs-workflows/.github/workflows/extract-entity-info.yml@main
-        with:
-          path: ${{ matrix.path }}
-          entity_kind: Component
-      # render and publish techdocs
-      - id: render-publish-s3
-        uses: TierMobility/techdocs-workflows/.github/workflows/render-publish-s3.yml@main
-        with:
-          entity_name: ${{ steps.extract-entity-info.outputs.entity_name }}
-          entity_namespace: ${{ steps.extract-entity-info.outputs.entity_namespace }}
-          entity_kind: ${{ steps.extract-entity-info.outputs.entity_kind }}
-        secrets: inherit
+      matrix: ${{ fromJson(needs.catalog.outputs.entity_locations) }}
+    # extract component information from the catalog info file, render and publish techdocs
+    uses: TierMobility/techdocs-workflows/.github/workflows/extract-render-publish.yml@main
+    with:
+      path: ${{ matrix.path }}
+      entity_kind: Component
+    secrets: inherit

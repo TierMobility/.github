@@ -1,4 +1,4 @@
-name: Render & Publish TechDocs from a Monorepo
+name: Render & Publish TechDocs (Monorepo)
 
 on:
   push:

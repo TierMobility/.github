@@ -3,25 +3,23 @@ name: Render & Publish TechDocs
 on:
   push:
     # runs only when TechDocs related files are updated.
-    branches: [ $default-branch ]
+    branches: [$default-branch]
     paths:
-      - 'docs/**'
-      - 'mkdocs.yaml'
-      - 'mkdocs.yml'
+      - "docs/**"
+      - "mkdocs.yaml"
+      - "mkdocs.yml"
 
 jobs:
-  catalog:
-    # extract component information from the catalog info file
-    uses: TierMobility/techdocs-workflows/.github/workflows/extract-entity-info.yml@main
-    with:
-      path: catalog-info.yaml
-      entity_kind: Component
   techdocs:
-    # render and publish techdocs
-    needs: catalog
-    uses: TierMobility/techdocs-workflows/.github/workflows/render-publish-s3.yml@main
-    with:
-      entity_name: ${{ needs.catalog.outputs.entity_name }}
-      entity_namespace: ${{ needs.catalog.outputs.entity_namespace }}
-      entity_kind: ${{ needs.catalog.outputs.entity_kind }}
-    secrets: inherit
+  runs-on: ubuntu-latest
+  # extract component information from the catalog info file, render and publish techdocs
+  steps:
+    - uses: actions/checkout@v3
+    - uses: TierMobility/techdocs-render-publish-action@main
+      with:
+        path: catalog-info.yaml
+        entity_kind: Component
+        bucket_name: ${{ secrets.TECHDOCS_S3_BUCKET_NAME }}
+        aws_access_key_id: ${{ secrets.TECHDOCS_AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.TECHDOCS_AWS_SECRET_ACCESS_KEY }}
+        aws_region: ${{ secrets.TECHDOCS_AWS_REGION }}

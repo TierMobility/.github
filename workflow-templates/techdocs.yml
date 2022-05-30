@@ -11,15 +11,15 @@ on:
 
 jobs:
   techdocs:
-  runs-on: ubuntu-latest
-  # extract component information from the catalog info file, render and publish techdocs
-  steps:
-    - uses: actions/checkout@v3
-    - uses: TierMobility/techdocs-render-publish-action@main
-      with:
-        path: catalog-info.yaml
-        entity_kind: Component
-        bucket_name: ${{ secrets.TECHDOCS_S3_BUCKET_NAME }}
-        aws_access_key_id: ${{ secrets.TECHDOCS_AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key: ${{ secrets.TECHDOCS_AWS_SECRET_ACCESS_KEY }}
-        aws_region: ${{ secrets.TECHDOCS_AWS_REGION }}
+    runs-on: ubuntu-latest
+    # extract component information from the catalog info file, render and publish techdocs
+    steps:
+      - uses: actions/checkout@v3
+      - uses: TierMobility/techdocs-render-publish-action@main
+        with:
+          path: catalog-info.yaml
+          entity_kind: Component
+          bucket_name: ${{ secrets.TECHDOCS_S3_BUCKET_NAME }}
+          aws_access_key_id: ${{ secrets.TECHDOCS_AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.TECHDOCS_AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.TECHDOCS_AWS_REGION }}
